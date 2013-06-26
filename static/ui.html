@@ -1,0 +1,59 @@
+<html>
+<head>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+
+
+<script>
+
+function loadList() {
+	
+	$.get("/messages", function(data) {
+		messages = JSON.parse(data);
+		messageHTML = "";
+		for (var i = 0; i < messages.length; i++) {
+			messageHTML+="<p>"+messages[i]+"</p>";
+		}
+		$("#list").html(messageHTML);
+		
+	});
+}
+
+
+$(function() {
+
+	loadList();
+	
+	//event handlers
+	$("#submit").click(function() {
+
+		$.post(
+			"/messages",
+			{"message" : $("#message").val()},
+			function (data) {
+				loadList();
+			}
+		);
+	});
+	
+	$("#refresh").click(function() {
+		loadList();
+	});
+
+
+});
+
+</script>
+</head>
+
+<body>
+
+
+<input id="message" type="text" width="20"/><br><input id="submit" type="button" value="Submit dat message"/><input id="refresh" type="button" value="Refresh"/>
+<div id="list"></div>
+
+
+
+
+</body>
